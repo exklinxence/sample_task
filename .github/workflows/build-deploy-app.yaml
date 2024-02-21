@@ -1,0 +1,60 @@
+name: Deploy Node App
+
+on:
+  push:
+    branches:
+    - 'staging'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: code checkout
+      uses: actions/checkout@v2
+    
+    - name: Get branch name
+      id: extract_branch
+      run: |
+          branch_name=$(echo "${GITHUB_REF}" | awk -F'/' '{print $3}')
+          echo "Branch Name: $branch_name"
+          echo "::set-env name=BRANCH_NAME::${branch_name}"
+
+    - name: Install kubectl
+      uses: steebchen/kubectl@v1
+      with:
+        version: latest
+
+    - name: Install Helm
+      run: |
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+
+    - name: install the gcloud cli
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.GOOGLE_PROJECT }}
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        install_components: 'gke-gcloud-auth-plugin'
+        export_default_credentials: true
+
+    - name: build and push the docker image
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+        $REPOSITORY: us-central1-docker.pkg.staging/$GOOGLE_PROJECT/origin-public-ip
+      run: |
+        gcloud auth configure-docker us-central1-docker.pkg.staging
+        docker build --platform linux/amd64,linux/arm64 -t $REPOSITORY:$BRANCH_NAME .
+        docker push $REPOSITORY:$BRANCH_NAME
+
+    - name: deploy to gke
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+      run: |
+        gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
+        sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" resources.yaml
+        rm -fr charts/*
+        rm -fr out/
+        helm lint
+        helm package -d charts .

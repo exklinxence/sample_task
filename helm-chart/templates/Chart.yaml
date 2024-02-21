@@ -1,0 +1,12 @@
+apiVersion: v2
+name: origin-public-ip
+description: A Helm chart for deploying origin-public-ip in Kubernetes
+maintainers:
+  - name: Collins
+    email: exklinxence@gmail.com
+
+type: application
+
+version: 0.1.0
+
+appVersion: "0.1.0"
