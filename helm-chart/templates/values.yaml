@@ -1,5 +1,5 @@
 image:
-  name: us-central1-docker.pkg.staging/$GOOGLE_PROJECT/origin-public-ip:staging
+  name: europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/origin-public-ip:staging
   tag: staging
   pullPolicy: Always
 

@@ -28,7 +28,7 @@ spec:
           capabilities:
             drop: ["ALL"]       
         image: "{{ .Values.image.name }}:{{ .Values.image.tag}}"
-        image: us-central1-docker.pkg.staging/$GOOGLE_PROJECT/origin-public-ip
+        image: europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/origin-public-ip
         imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
