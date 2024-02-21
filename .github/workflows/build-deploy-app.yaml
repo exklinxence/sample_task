@@ -42,8 +42,9 @@ jobs:
       env:
         GOOGLE_PROJECT: $PROJECT_ID
       run: |
+        echo image tag $REPOSITORY:$BRANCH_NAME 
         gcloud auth configure-docker europe-west9-docker.pkg.dev
-        docker build --platform linux/amd64,linux/arm64 -t $REPOSITORY:$BRANCH_NAME .
+        docker build -t $REPOSITORY:$BRANCH_NAME .
         docker push $REPOSITORY:$BRANCH_NAME
 
     - name: deploy to gke
