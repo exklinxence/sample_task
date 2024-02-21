@@ -86,6 +86,7 @@ jobs:
       with:
         cluster_name: $GKE_CLUSTER
         location: $GKE_ZONE
+        project_id: $PROJECT_ID
 
     - name: Deploy on the GKE
       run: |-
