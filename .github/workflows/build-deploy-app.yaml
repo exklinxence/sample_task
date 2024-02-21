@@ -20,11 +20,6 @@ jobs:
           echo "Branch Name: $branch_name"
           echo "::set-env name=BRANCH_NAME::${branch_name}"
 
-    - name: Install kubectl
-      uses: steebchen/kubectl@v1
-      with:
-        version: latest
-
     - name: Install Helm
       run: |
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
