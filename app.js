@@ -65,6 +65,10 @@ app.get('/', (req, res) => {
     res.send(htmlContent);
 });
 
+app.get('/health', (req, res) => {
+    res.status(200).send('Server is healthy!');
+  });
+
 // Generate HTML content
 function generateHTML(originalIP, reverseIP) {
     return `
