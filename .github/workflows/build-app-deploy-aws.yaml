@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: 'eu-west-1'
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  EKS_CLUSTER_NAME: 'your-eks-cluster-name'
+  EKS_CLUSTER_NAME: 'my-cluster'
   IMAGE: origin-public-ip
   IMAGE_TAG: latest
   ECR_REPO: 'origin-public-ip'
