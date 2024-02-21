@@ -7,12 +7,12 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-  GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  GKE_CLUSTER: autopilot-cluster-1
+  GKE_ZONE: europe-west9
   IMAGE: origin-public-ip
   IMAGE_TAG: latest 
-  GAR_ZONE: ${{ secrets.GKE_ZONE }} 
-  GAR_REPO: ${{ secrets.GAR_REPO }}
+  GAR_ZONE: europe-west9
+  GAR_REPO: sample-app
 
 jobs:
   setup-build-publish-deploy:
