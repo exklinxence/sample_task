@@ -1,4 +1,4 @@
-name: Deploy Origin-public-ip
+name: Deploy GCP Origin-public-ip
 
 on:
   push:
