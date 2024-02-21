@@ -11,7 +11,7 @@ env:
   EKS_CLUSTER_NAME: 'your-eks-cluster-name'
   IMAGE: origin-public-ip
   IMAGE_TAG: latest
-  ECR_REPO: 'your-ecr-repo'
+  ECR_REPO: 'origin-public-ip'
 
 jobs:
   setup-and-build:
