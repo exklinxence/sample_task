@@ -35,14 +35,14 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag 377877851685.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO }}:staging \
+          --tag 377877851685.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO }}:${{ env.IMAGE_TAG }} \
           .
 
     # Push the Docker image to Amazon ECR
     - name: Publish
       run: |-
         aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin 377877851685.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
-        docker push 377877851685.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO }}:staging
+        docker push 377877851685.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO }}:${{ env.IMAGE_TAG }}
 
     # Install kubectl and configure kubeconfig for EKS
     - name: Install kubectl and Configure Kubeconfig
