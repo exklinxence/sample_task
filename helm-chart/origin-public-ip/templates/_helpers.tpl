@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "origin-public-ip.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -12,6 +12,6 @@ Expand the name of the chart.
 {{/*
 App name
 */}}
-{{- define "origin-public-ip.name" -}}
+{{- define "origin-public-ip.app.name" -}}
 {{ include "origin-public-ip.name" . }}-app
 {{- end }}

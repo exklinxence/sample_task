@@ -60,7 +60,7 @@ jobs:
 
     - name: Deploy on EKS
       run: |-
-        cd helm-chart/templates
+        cd helm-chart/origin-public-ip
         rm -fr charts/*
         rm -fr out/
         helm lint
