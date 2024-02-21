@@ -70,24 +70,11 @@ jobs:
     #           --atomic --install \
     #           --namespace production
 
-  setup-and-deploy:
-    needs: [create-image-and-push-to-dockerhub]
-
-    name: Setup and Deploy
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ secrets.GKE_SA_KEY }}
+        
     - name: Install Helm
       run: |
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
