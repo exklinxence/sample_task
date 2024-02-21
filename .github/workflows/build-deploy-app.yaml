@@ -5,6 +5,11 @@ on:
     branches:
     - 'staging'
 
+env:
+  PROJECT_ID: ${{ secrets.GOOGLE_PROJECT }} 
+  GAR_REPO: sample-app
+  $REPOSITORY: europe-west9-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/origin-public-ip  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,7 +23,7 @@ jobs:
       run: |
           branch_name=$(echo "${GITHUB_REF}" | awk -F'/' '{print $3}')
           echo "Branch Name: $branch_name"
-          
+
     - name: Install Helm
       run: |
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -28,15 +33,14 @@ jobs:
     - name: install the gcloud cli
       uses: google-github-actions/setup-gcloud@v0
       with:
-        project_id: ${{ secrets.GOOGLE_PROJECT }}
+        project_id: $PROJECT_ID
         service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         install_components: 'gke-gcloud-auth-plugin'
         export_default_credentials: true
 
     - name: build and push the docker image
       env:
-        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-        $REPOSITORY: europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/origin-public-ip
+        GOOGLE_PROJECT: $PROJECT_ID
       run: |
         gcloud auth configure-docker europe-west9-docker.pkg.dev
         docker build --platform linux/amd64,linux/arm64 -t $REPOSITORY:$BRANCH_NAME .
