@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: autopilot-cluster-1
-  GKE_ZONE: us-central1
+  GKE_ZONE: europe-west9
   IMAGE: origin-public-ip
   IMAGE_TAG: latest 
   GAR_ZONE: europe-west9
@@ -55,20 +55,6 @@ jobs:
     - name: Publish
       run: |-
         docker push "$GAR_ZONE-docker.pkg.dev/$PROJECT_ID/$GAR_REPO/$IMAGE:$IMAGE_TAG"
-
-    # - name: deploy to gke
-    #   env:
-    #     GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-    #   run: |
-    #     gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
-    #     cd helm-chart/templates
-    #     rm -fr charts/*
-    #     rm -fr out/
-    #     helm lint
-    #     helm package -d charts .
-    #     helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
-    #           --atomic --install \
-    #           --namespace production
 
     - name: Install Helm
       run: |
