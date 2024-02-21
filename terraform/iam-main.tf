@@ -16,6 +16,36 @@ output "github_actions_access_key_secret" {
 }
 
 
+resource "aws_iam_policy" "ecr_deployment_policy" {
+  name        = "ecr_deployment_policy"
+  description = "Policy for deploying to Amazon EKS"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+          "ecr:GetAuthorizationToken"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "ecr_deployment_attachment" {
+  user       = aws_iam_user.github_actions_user.name
+  policy_arn = aws_iam_policy.ecr_deployment_policy.arn
+}
+
 resource "aws_iam_policy" "eks_deployment_policy" {
   name        = "eks_deployment_policy"
   description = "Policy for deploying to Amazon EKS"
