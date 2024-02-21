@@ -70,11 +70,6 @@ jobs:
     #           --atomic --install \
     #           --namespace production
 
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v1
-      with:
-        credentials_json: ${{ secrets.GKE_SA_KEY }}
-
     - name: Install Helm
       run: |
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -89,5 +84,4 @@ jobs:
         helm lint
         helm package -d charts .
         helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
-              --atomic --install \
-              --namespace production
+              --atomic --install 
