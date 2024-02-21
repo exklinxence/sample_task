@@ -66,3 +66,6 @@ jobs:
         rm -fr out/
         helm lint
         helm package -d charts .
+        helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
+              --atomic --install \
+              --namespace production
