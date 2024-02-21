@@ -7,16 +7,16 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: autopilot-cluster-1    # cluster name
-  GKE_ZONE: europe-west9  # cluster zone
-  IMAGE: micro # image name
-  IMAGE_TAG: latest # image tag
-  GAR_ZONE: europe-west9 # artifact registry zone
-  GAR_REPO: sample-app # artifact registry repository
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  IMAGE: origin-public-ip
+  IMAGE_TAG: latest 
+  GAR_ZONE: ${{ secrets.GKE_ZONE }} 
+  GAR_REPO: ${{ secrets.GAR_REPO }}
 
 jobs:
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+    name: Setup, Build, Publish
     runs-on: ubuntu-latest
     environment: production
 
