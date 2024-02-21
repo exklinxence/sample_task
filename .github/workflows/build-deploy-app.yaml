@@ -18,8 +18,7 @@ jobs:
       run: |
           branch_name=$(echo "${GITHUB_REF}" | awk -F'/' '{print $3}')
           echo "Branch Name: $branch_name"
-          echo "::set-env name=BRANCH_NAME::${branch_name}"
-
+          
     - name: Install Helm
       run: |
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
