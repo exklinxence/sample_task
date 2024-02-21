@@ -65,6 +65,6 @@ jobs:
         rm -fr out/
         helm lint
         helm package -d charts .
-        aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }}
+        aws eks --region eu-west-1 update-kubeconfig --name my-cluster
         helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
               --atomic --install
