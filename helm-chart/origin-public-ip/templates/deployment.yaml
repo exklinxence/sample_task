@@ -4,6 +4,7 @@ metadata:
   name: {{ include "origin-public-ip.app.name" . }}
   labels:
     app: {{ include "origin-public-ip.app.name" . }}
+  namespace: production
 spec:
   replicas: 1
   selector:
