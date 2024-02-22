@@ -66,8 +66,8 @@ jobs:
         helm lint
         helm package -d charts .
         aws eks update-kubeconfig --name my-cluster-1 --region eu-west-1
-        cat ~/.kube/config
-        sed -i 's/\*\*\*:/377877851685:/g' ~/.kube/config
-        cat ~/.kube/config
+        cat /home/runner/.kube/config
+        sed -i 's/\*\*\*:/377877851685:/g' /home/runner/.kube/config
+        cat /home/runner/.kube/config
         helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
               --atomic --install
