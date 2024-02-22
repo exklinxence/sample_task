@@ -16,9 +16,13 @@
  - Docker
  - Kubernetes
 
-### Test Application locally with Docker
+### Github Secrets to create 
 
-- `Ensure Docker is running`
-- ``
+- AWS_ACCESS_KEY_ID
+- AWS_ACCOUNT_ID
+- AWS_ROLE_ARN
+- AWS_SECRET_ACCESS_KEY
+
+
 
 

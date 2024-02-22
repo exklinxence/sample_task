@@ -15,7 +15,6 @@ output "github_actions_access_key_secret" {
   sensitive = true
 }
 
-
 resource "aws_iam_policy" "ecr_deployment_policy" {
   name        = "ecr_deployment_policy"
   description = "Policy for deploying to Amazon EKS"
@@ -81,9 +80,6 @@ resource "aws_iam_user_policy_attachment" "eks_deployment_attachment" {
   policy_arn = aws_iam_policy.eks_deployment_policy.arn
 }
 
-
-
-
 #EKS IAM ROLE
 
 module "allow_eks_access_iam_policy" {
@@ -133,7 +129,6 @@ module "user1_iam_user" {
   force_destroy = true
 }
 
-
 module "allow_assume_eks_admins_iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "5.3.1"
@@ -166,3 +161,6 @@ module "eks_admins_iam_group" {
   custom_group_policy_arns          = [module.allow_assume_eks_admins_iam_policy.arn]
 }
 
+output "eks_user_admin_role_arn" {
+  value = module.eks_admins_iam_role.iam_role_arn
+}
