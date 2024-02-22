@@ -98,6 +98,6 @@ jobs:
         cluster-name: my-cluster-1
         cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         chart-path: helm-chart/origin-public-ip/
-        namespace: default
+        namespace: production
         values: key1=value1,key2=value2
-        name: sample-1
+        name: origin-public-ip
