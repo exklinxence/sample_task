@@ -1,60 +1,84 @@
 module "eks" {
-  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.30"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "18.29.0"
 
-  aws_region = local.aws_region
-  tags       = local.tags
+  cluster_name    = "my-cluster-1"
+  cluster_version = "1.23"
 
-  cluster_name = local.environment
+  cluster_endpoint_public_access  = true
+  cluster_endpoint_private_access = true
+  vpc_id                          = module.vpc_staging.vpc_id
+  subnet_ids                      = module.vpc_staging.private_subnets
+  enable_irsa                     = true
 
-  vpc_id         = module.vpc_staging.vpc_id
-  k8s_subnets    = module.vpc_staging.private_subnets
-  public_subnets = module.vpc_staging.public_subnets
+  eks_managed_node_group_defaults = {
+    disk_size = 30
+  }
 
-  cluster_version = "1.29"
+  eks_managed_node_groups = {
+    general = {
+      desired_size = 1
+      min_size     = 1
+      max_size     = 3
 
-  # public cluster - kubernetes API is publicly accessible
-  cluster_endpoint_public_access = true
-  cluster_endpoint_public_access_cidrs = [
-    "0.0.0.0/0",
-    "1.1.1.1/32",
-  ]
+      labels = {
+        role = "general"
+      }
 
-  # private cluster - kubernetes API is internal the the VPC
-  cluster_endpoint_private_access                = true
-  cluster_create_endpoint_private_access_sg_rule = true
-  cluster_endpoint_private_access_cidrs = [
-    "10.0.0.0/8",
-    "172.16.0.0/12",
-    "192.168.0.0/16",
-    "100.64.0.0/16",
-  ]
+      instance_types = ["t3.small"]
+      content_type   = "SPOT"
+    }
 
-  # Add whatever roles and users you want to access your cluster
-  map_roles = [
-    {
-      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role1"
-      username = "role1"
-      groups   = ["system:masters"]
-    },
-  ]
-  map_users = [
-    {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/username"
-      username = "username"
-      groups   = ["system:masters"]
-    },
-  ]
+    spot = {
+      desired_size = 1
+      min_size     = 1
+      max_size     = 10
 
-  node_groups = {
-    ng1 = {
-      version          = "1.29"
-      disk_size        = 20
-      desired_capacity = 2
-      max_capacity     = 4
-      min_capacity     = 1
-      instance_types   = ["t3.small"]
-      additional_tags  = local.tags
-      k8s_labels       = {}
+      labels = {
+        role = "spot"
+      }
+
+      taints = [{
+        key    = "market"
+        value  = "spot"
+        effect = "NO_SCHEDULE"
+      }]
+
+      instance_types = ["t3.micro"]
+      capacity_type  = "SPOT"
     }
   }
+
+  manage_aws_auth_configmap = true
+    aws_auth_roles = [
+        {
+        rolearn  = module.eks_admins_iam_role.iam_role_arn
+        username = module.eks_admins_iam_role.iam_role_name
+        groups   = ["system:masters"]
+        },
+    ]
+
+  tags = local.tags
 }
+
+# https://github.com/terraform-aws-modules/terraform-aws-eks/issues/2009
+data "aws_eks_cluster" "default" {
+  name = module.eks.cluster_id
+}
+
+data "aws_eks_cluster_auth" "default" {
+  name = module.eks.cluster_id
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.default.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.default.certificate_authority[0].data)
+  # token                  = data.aws_eks_cluster_auth.default.token
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.default.id]
+    command     = "aws"
+  }
+}
+

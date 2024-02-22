@@ -2,7 +2,7 @@ locals {
   azs         = ["${var.region}a", "${var.region}b", "${var.region}c"]
   environment = "staging"
 
-  name = "sample"
+  name       = "sample"
   aws_region = "eu-west-1"
 
 

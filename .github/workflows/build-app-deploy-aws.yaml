@@ -65,7 +65,7 @@ jobs:
         rm -fr out/
         helm lint
         helm package -d charts .
-        aws eks update-kubeconfig --name my-cluster --region eu-west-1
+        aws eks update-kubeconfig --name my-cluster-1--region eu-west-1
         echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
         echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
@@ -94,7 +94,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
-        cluster-name: my-cluster
+        cluster-name: my-cluster-1
         # config-files: .github/values/dev.yaml
         chart-path: helm-chart/origin-public-ip/charts/
         namespace: default
