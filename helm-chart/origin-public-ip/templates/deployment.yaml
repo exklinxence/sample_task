@@ -28,16 +28,15 @@ spec:
           capabilities:
             drop: ["ALL"]       
         image: "{{ .Values.image.name }}:{{ .Values.image.tag}}"
-        image: us-central1-docker.pkg.staging/$GOOGLE_PROJECT/origin-public-ip
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.app.containerPort }}
-          startupProbe:
-            {{- toYaml (default .Values.app.defaultProbe .Values.app.startupProbe) | nindent 12 }}
-          readinessProbe:
-            {{- toYaml (default .Values.app.defaultProbe .Values.app.readinessProbe) | nindent 12 }}
-          livenessProbe:
-            {{- toYaml (default .Values.app.defaultProbe .Values.app.livenessProbe) | nindent 12 }}
-          resources:
-            {{- toYaml .Values.app.resources | nindent 12 }}
+        ports:
+          - name: http
+            containerPort: {{ .Values.app.containerPort }}
+        startupProbe:
+          {{- toYaml (default .Values.app.defaultProbe .Values.app.startupProbe) | nindent 12 }}
+        readinessProbe:
+          {{- toYaml (default .Values.app.defaultProbe .Values.app.readinessProbe) | nindent 12 }}
+        livenessProbe:
+          {{- toYaml (default .Values.app.defaultProbe .Values.app.livenessProbe) | nindent 12 }}
+        resources:
+          {{- toYaml .Values.app.resources | nindent 12 }}
