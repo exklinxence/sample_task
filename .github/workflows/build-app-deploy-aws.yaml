@@ -97,7 +97,7 @@ jobs:
         aws-region: eu-west-1
         cluster-name: my-cluster-1
         cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
-        chart-path: helm-chart/origin-public-ip/charts/
+        chart-path: helm-chart/origin-public-ip/
         namespace: default
         values: key1=value1,key2=value2
         name: sample-1
