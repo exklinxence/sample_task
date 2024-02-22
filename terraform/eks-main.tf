@@ -1,144 +1,60 @@
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0"
+  source = "github.com/ManagedKube/kubernetes-ops//terraform-modules/aws/eks?ref=v1.0.30"
 
-  cluster_name    = "my-cluster-1"
+  aws_region = local.aws_region
+  tags       = local.tags
+
+  cluster_name = local.environment
+
+  vpc_id         = module.vpc_staging.vpc_id
+  k8s_subnets    = module.vpc_staging.private_subnets
+  public_subnets = module.vpc_staging.public_subnets
+
   cluster_version = "1.29"
 
+  # public cluster - kubernetes API is publicly accessible
   cluster_endpoint_public_access = true
+  cluster_endpoint_public_access_cidrs = [
+    "0.0.0.0/0",
+    "1.1.1.1/32",
+  ]
 
-  cluster_addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent = true
-    }
-  }
+  # private cluster - kubernetes API is internal the the VPC
+  cluster_endpoint_private_access                = true
+  cluster_create_endpoint_private_access_sg_rule = true
+  cluster_endpoint_private_access_cidrs = [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16",
+    "100.64.0.0/16",
+  ]
 
-  vpc_id                   = module.vpc_staging.vpc_id
-  subnet_ids               = module.vpc_staging.private_subnets
-  control_plane_subnet_ids = module.vpc_staging.private_subnets
+  # Add whatever roles and users you want to access your cluster
+  map_roles = [
+    {
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role1"
+      username = "role1"
+      groups   = ["system:masters"]
+    },
+  ]
+  map_users = [
+    {
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/username"
+      username = "username"
+      groups   = ["system:masters"]
+    },
+  ]
 
-  # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = {
-    instance_types = ["m6i.large", "m5.large"]
-  }
-
-  eks_managed_node_groups = {
-    example = {
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
-
-      instance_types = ["t3.large"]
-      capacity_type  = "SPOT"
-    }
-  }
-
-  # Cluster access entry
-  # To add the current caller identity as an administrator
-  enable_cluster_creator_admin_permissions = true
-
-  create_iam_role          = true
-  iam_role_name            = "eks-managed-node-group-complete-example"
-  iam_role_use_name_prefix = false
-  iam_role_description     = "EKS managed node group complete example role"
-  iam_role_tags = {
-    Purpose = "Protector of the kubelet"
-  }
-  iam_role_additional_policies = {
-    AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-    additional                         = aws_iam_policy.node_additional.arn
-  }
-
-  access_entries = {
-    # One access entry with a policy associated
-    ex-single = {
-      kubernetes_groups = []
-      principal_arn     = aws_iam_role.this["single"].arn
-
-      policy_associations = {
-        single = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-          access_scope = {
-            namespaces = ["production", "staging"]
-            type       = "namespace"
-          }
-        }
-      }
+  node_groups = {
+    ng1 = {
+      version          = "1.29"
+      disk_size        = 20
+      desired_capacity = 2
+      max_capacity     = 4
+      min_capacity     = 1
+      instance_types   = ["t3.small"]
+      additional_tags  = local.tags
+      k8s_labels       = {}
     }
   }
-  tags = local.tags
-}
-
-
-resource "aws_iam_policy" "node_additional" {
-  name        = "my-cluster-additional"
-  description = "Example usage of node additional policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ec2:Describe*",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
-
-  tags = local.tags
-}
-
-resource "aws_iam_role" "this" {
-  for_each = toset(["single", "multiple"])
-
-  name = "ex-${each.key}"
-
-  # Just using for this example
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = "Example"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
-
-  tags = local.tags
-}
-
-resource "aws_security_group" "remote_access" {
-  name_prefix = "${local.name}-remote-access"
-  description = "Allow remote SSH access"
-  vpc_id      = module.vpc_staging.vpc_id
-
-  ingress {
-    description = "SSH access"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8"]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = merge(local.tags, { Name = "${local.name}-remote" })
 }

@@ -3,6 +3,7 @@ locals {
   environment = "staging"
 
   name = "sample"
+  aws_region = "eu-west-1"
 
 
   private_subnets      = var.private_subnets
