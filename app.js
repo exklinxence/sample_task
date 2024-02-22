@@ -38,7 +38,7 @@ function saveIPToMongo(req, res, next) {
 
 // Get the original IP address from the request object
 function getOriginalIP(req) {
-    return proxyAddr(req, 'loopback');
+    return proxyAddr(req, 'loopback').split(":").pop();
 }
 
 // Reverse the IP address

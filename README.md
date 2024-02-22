@@ -5,6 +5,11 @@
 
 ```Infrastructure was provisioned with terraform and the script can be found in the terraform directory. The terraform state is managed locally ```
 
-The github
+```The github user were provisioned with terraform```
+
+### Test Application locally with Docker
+
+- `Ensure Docker is running`
+- ``
 
 
