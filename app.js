@@ -8,7 +8,7 @@ const app = express();
 app.set('trust proxy', 1);
 
 // MongoDB Atlas connection URI
-const MONGODB_URI = 'mongodb+srv://exklinxence:DwBqXyLLy6TTUzXn@cluster0.nhww1c1.mongodb.net/';
+const MONGODB_URI = process.env.MONGODB_URI
 
 // Connect to MongoDB Atlas
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
