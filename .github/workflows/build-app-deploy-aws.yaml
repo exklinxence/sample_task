@@ -96,7 +96,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
         cluster-name: my-cluster-1
-        # config-files: .github/values/dev.yaml
+        cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         chart-path: helm-chart/origin-public-ip/charts/
         namespace: default
         values: key1=value1,key2=value2
