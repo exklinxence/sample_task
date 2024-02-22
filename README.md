@@ -1,11 +1,20 @@
 ### README
-``` This application can be test on [here](http://a4ad05210fe854ffabcc162f8c56de96-806295237.eu-west-1.elb.amazonaws.com:3000) ```
+``` This application can be test on [here](http://a57154d538ab74a3f97cfa7e997e2346-84494540.eu-west-1.elb.amazonaws.com:3000) ```
 
 ```The application was deployed with AWS EKS```
 
 ```Infrastructure was provisioned with terraform and the script can be found in the terraform directory. The terraform state is managed locally ```
 
 ```The github user were provisioned with terraform```
+
+### Stacks Used
+ - AWS EKS
+ - MongoDB
+ - Github Actions
+ - Helm Chart
+ - Nodejs
+ - Docker
+ - Kubernetes
 
 ### Test Application locally with Docker
 
