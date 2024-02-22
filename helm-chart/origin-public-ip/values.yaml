@@ -14,7 +14,7 @@ app:
 
   defaultProbe:
     httpGet:
-      path: "/health"
+      path: "/"
       port: 3000
     initialDelaySeconds: 20
     periodSeconds: 10
