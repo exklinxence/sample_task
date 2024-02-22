@@ -17,7 +17,7 @@ jobs:
   setup-and-build:
     name: Setup, Build, Publish
     runs-on: ubuntu-latest
-    environment: production
+    environment: staging
 
     steps:
     - name: Checkout
