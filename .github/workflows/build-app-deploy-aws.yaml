@@ -73,7 +73,7 @@ jobs:
         # helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
         #       --atomic --install
 
-    - name: Deploy on EKS
+    - name: Show PWD on new run
       run: |-
         echo $(pwd)
     # - name: helm deploy
