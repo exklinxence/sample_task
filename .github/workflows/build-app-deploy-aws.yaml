@@ -79,8 +79,8 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:
-        command: |
-          pwd &&
+        command: |-
+          cd helm-chart/origin-public-ip && pwd &&
           helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
               --atomic --install
 
