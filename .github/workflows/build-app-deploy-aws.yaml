@@ -65,7 +65,7 @@ jobs:
         rm -fr out/
         helm lint
         helm package -d charts .
-        aws eks update-kubeconfig --name my-cluster-1 --region eu-west-1
+        aws eks update-kubeconfig --name my-cluster --region eu-west-1
         echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
         echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
