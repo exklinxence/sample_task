@@ -76,8 +76,8 @@ jobs:
     - name: Show PWD on new run
       run: |-
         echo $(pwd)
-        ls
-        kubectl get po -A
+        tar -xvzf helm-chart/origin-public-ip/charts/$IMAGE-*.tgz
+        ls helm-chart/origin-public-ip/charts/
 
     # - name: helm deploy
     #   uses: koslib/helm-eks-action@master
