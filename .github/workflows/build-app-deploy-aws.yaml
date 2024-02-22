@@ -76,7 +76,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
-        cluster-name: my-cluster-1
+        cluster-name: my-cluster
         # config-files: .github/values/dev.yaml
         chart-path: helm-chart/origin-public-ip/charts/
         namespace: default
