@@ -80,7 +80,7 @@ jobs:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:
         command: |
-          pwd
+          pwd &&
           helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
               --atomic --install
 
