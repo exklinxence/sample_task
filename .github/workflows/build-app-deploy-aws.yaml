@@ -76,6 +76,7 @@ jobs:
     - name: Show PWD on new run
       run: |-
         echo $(pwd)
+        ls
     # - name: helm deploy
     #   uses: koslib/helm-eks-action@master
     #   env:
