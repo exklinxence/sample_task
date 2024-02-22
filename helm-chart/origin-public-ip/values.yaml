@@ -1,5 +1,9 @@
 image:
+<<<<<<< HEAD:helm-chart/origin-public-ip/values.yaml
   name: 377877851685.dkr.ecr.eu-west-1.amazonaws.com/origin-public-ip
+=======
+  name: europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/origin-public-ip:staging
+>>>>>>> 7b7d4c7 (set up github actions):helm-chart/templates/values.yaml
   tag: staging
   pullPolicy: Always
 

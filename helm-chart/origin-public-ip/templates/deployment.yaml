@@ -28,6 +28,10 @@ spec:
           capabilities:
             drop: ["ALL"]       
         image: "{{ .Values.image.name }}:{{ .Values.image.tag}}"
+<<<<<<< HEAD:helm-chart/origin-public-ip/templates/deployment.yaml
+=======
+        image: europe-west9-docker.pkg.dev/$GOOGLE_PROJECT/origin-public-ip
+>>>>>>> 7b7d4c7 (set up github actions):helm-chart/templates/deployment.yaml
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
           - name: http
