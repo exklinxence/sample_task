@@ -67,7 +67,7 @@ jobs:
         helm package -d charts .
         aws eks update-kubeconfig --name my-cluster-1 --region eu-west-1
         cat ~/.kube/config
-        sed -i "s/arn:aws:eks:eu-west-1:***:cluster\/my-cluster-1/arn:aws:eks:eu-west-1:377877851685:cluster\/my-cluster-1/g" ~/.kube/config
+        sed -i 's/\*\*\*:/377877851685:/g' ~/.kube/config
         cat ~/.kube/config
         helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
               --atomic --install
