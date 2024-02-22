@@ -73,11 +73,12 @@ jobs:
         # helm upgrade $IMAGE $(ls charts/$IMAGE-*.tgz) \
         #       --atomic --install
 
-    - name: Show PWD on new run
-      run: |-
-        echo $(pwd)
-        ls
-        kubectl get po -A
+    # - name: Show PWD on new run
+    #   run: |-
+    #     echo $(pwd)
+    #     ls
+    #     kubectl get po -A
+
     # - name: helm deploy
     #   uses: koslib/helm-eks-action@master
     #   env:
