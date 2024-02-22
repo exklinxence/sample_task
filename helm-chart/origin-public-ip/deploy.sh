@@ -2,5 +2,5 @@
         rm -fr out/
         helm lint
         helm package -d charts .
-         helm upgrade origin-public-ip $(ls charts/origin-*.tgz) \
+         helm upgrade origin-public-ip $(ls charts/origin-*.tgz) -n staging \
               --atomic --install
