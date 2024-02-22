@@ -78,7 +78,7 @@ jobs:
         aws-region: eu-west-1
         cluster-name: my-cluster-1
         # config-files: .github/values/dev.yaml
-        chart-path: helm-chart/origin-public-ip/charts/
+        chart-path: helm-chart/origin-public-ip/charts/$(ls charts/$IMAGE-*.tgz)
         namespace: default
         values: key1=value1,key2=value2
         name: sample-1
