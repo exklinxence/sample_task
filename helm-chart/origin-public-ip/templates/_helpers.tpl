@@ -13,5 +13,5 @@ Expand the name of the chart.
 App name
 */}}
 {{- define "origin-public-ip.app.name" -}}
-{{ include "origin-public-ip.name" . }}-app
+{{ include "origin-public-ip.name" . }}-app-1
 {{- end }}
