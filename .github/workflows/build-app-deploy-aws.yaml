@@ -76,6 +76,6 @@ jobs:
         cluster-name: my-cluster-1
         cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         chart-path: helm-chart/origin-public-ip/
-        namespace: production
+        namespace: staging
         values: key1=value1,key2=value2
         name: origin-public-ip
