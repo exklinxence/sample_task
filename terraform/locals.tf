@@ -2,6 +2,8 @@ locals {
   azs         = ["${var.region}a", "${var.region}b", "${var.region}c"]
   environment = "staging"
 
+  name = "sample"
+
 
   private_subnets      = var.private_subnets
   private_subnet_names = var.private_subnet_names
