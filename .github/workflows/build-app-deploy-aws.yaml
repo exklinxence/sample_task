@@ -34,9 +34,12 @@ jobs:
 
     # Build the Docker image
     - name: Build
+      env:
+            MONGODB_URI: ${{ secrets.MONGODB_URI }}
       run: |-
         docker build \
           --tag 377877851685.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO }}:${{ env.IMAGE_TAG }} \
+          --build-arg MONGODB_URI=$MONGODB_URI \
           .
 
     # Push the Docker image to Amazon ECR

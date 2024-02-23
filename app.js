@@ -95,4 +95,3 @@ app.listen(PORT, () => {
 });
 
 
-//mongodb+srv://exklinxence:DwBqXyLLy6TTUzXn@cluster0.nhww1c1.mongodb.net/

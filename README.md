@@ -40,6 +40,7 @@ The following local workflow enables rapid testing and development.
 - AWS_ACCOUNT_ID
 - AWS_ROLE_ARN
 - AWS_SECRET_ACCESS_KEY
+- MONGODB_URI
 
 ### Deploy Code
 - git push to github (workflow will be triggered)
