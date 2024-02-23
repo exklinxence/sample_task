@@ -2,7 +2,8 @@ FROM node:20.11.1-slim
 
 WORKDIR /src
 
-ENV MONGODB_URI=
+ARG MONGODB_URI
+ENV MONGODB_URI=$MONGODB_URI
 
 COPY package.json app.js /src/
 
