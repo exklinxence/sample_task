@@ -27,12 +27,12 @@ The following local workflow enables rapid testing and development.
 - `aws sts get-caller-identity` - to verify that you assumed the IAM role by running this command
 
 ### CLI command
-- cd terraform (Assuming Terraform is installed locally)
-- terraform init
-- terraform fmt
-- terraform validate
-- terraform plan
-- terraform apply --auto-approve
+- `cd terraform` (Assuming Terraform is installed locally)
+- `terraform init`
+- `terraform fmt`
+- `terraform validate`
+- `terraform plan`
+- `terraform apply --auto-approve`
 
 ### Github Secrets to create 
 
@@ -43,3 +43,6 @@ The following local workflow enables rapid testing and development.
 
 ### Deploy Code
 - git push to github (workflow will be triggered)
+
+### Database Networking
+The database in use is mongodb atlas, The security setting is to only allow requests from the nat gateway ip where eks is 
